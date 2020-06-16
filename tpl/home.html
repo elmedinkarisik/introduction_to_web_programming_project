@@ -1,0 +1,134 @@
+<h1>Home</h1>
+
+<!-- Button trigger modal -->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="open_modal()">
+        Register
+    </button> 
+-->  
+<!-- Modal -->
+<!--
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="registerForm">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Register</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <input type="text" class="form-control" name="first_name" placeholder="Enter your first name">
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <input type="text" class="form-control" name="last_name" placeholder="Enter your last name">
+                    </div>
+                    <div class="form-group">
+                      <label>Email address</label>
+                      <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Enter your email">
+                      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" class="form-control" name="password" placeholder="Enter your password">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Register</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+-->
+
+<!-- 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#loginModal" onclick="open_modal2()">
+    Login
+</button>
+
+
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form id="loginForm">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Login</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                    <div class="form-group">
+                      <label>Email address</label>
+                      <input type="email" class="form-control" name="login_email" aria-describedby="emailHelp2" placeholder="Enter your email">
+                      <small id="emailHelp2" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                    </div>
+                    <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" class="form-control" name="login_password" placeholder="Enter your password">
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+      </div>
+    </div>
+</div>
+-->
+
+<script>
+    function open_modal(){
+        $('#exampleModal').modal('toggle');
+    }
+
+    $('#registerForm').validate({
+        rules: {
+            first_name: {
+                required: true
+            },
+            last_name: {
+                required: true
+            },
+            email: {
+                required: true
+            },
+            password: {
+                required: true
+            }
+        },
+        submitHandler: function(form) {
+            console.log(form);
+            // ajax call
+            $('#exampleModal').modal('toggle');
+            toastr.success('You have successfully registered your account!');
+        }
+    });
+
+    function open_modal2(){
+        $('#loginModal').modal('toggle');
+    }
+
+    $('#loginForm').validate({
+        rules: {
+            login_email: {
+                required: true
+            },
+            login_password: {
+                required: true
+            }
+        },
+        submitHandler: function(form) {
+            console.log(form);
+            // ajax call
+            $('#loginModal').modal('toggle');
+            toastr.success('You have successfully logged in!');
+        }
+    });
+</script>

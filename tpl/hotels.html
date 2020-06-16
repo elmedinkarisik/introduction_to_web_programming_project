@@ -1,0 +1,151 @@
+<div style="margin-top:10%; margin-left: 2%; margin-right:2%">
+    </div>
+    <table id="example" class="displsay" style="width:100%,">
+    </table>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#reservationModal" onclick="open_reservation_modal()">
+        Make Reservation
+    </button>
+    
+    <div class="modal fade" id="reservationModal" tabindex="-1" role="dialog" aria-labelledby="reservationModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <form id="reservationForm">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reservationModalLabel">Make a reservation</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                        <div class="form-group">
+                          <label>Hotel</label>
+                          <input type="text" class="form-control" name="hotel" placeholder="Enter name of hotel">
+                        </div>
+                        <div class="form-group">
+                          <label>Check-In Date</label>
+                          <input type="date" class="form-control" name="check_in_date" placeholder="Select a check-in date">
+                        </div>
+                        <div class="form-group">
+                            <label>Check-Out Date</label>
+                            <input type="date" class="form-control" name="check_out_date" placeholder="Select a check-out date">
+                        </div>
+                        <div class="form-group">
+                            <label>Room Nummber</label>
+                            <input type="text" class="form-control" name="room_number" placeholder="Choose a room number">
+                          </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Confirm Reservation</button>
+                </div>
+            </form>
+          </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Hotel</th>
+            <th scope="col">Check-In Date</th>
+            <th scope="col">Check-Out Date</th>
+            <th scope="col">Room Number</th>
+            <th scope="col">Delete</th>
+            <th scope="col">Info</th>
+          </tr>
+        </thead>
+        <tbody id="table_content">
+        </tbody>
+    </table>
+  
+    <script type="text/javascript">
+
+    get_reservations();
+
+    function get_reservations(){
+        $.get("rest/reservations", function( data ) { 
+            var html = '';
+            for(var i = 0; i < data.length; i++){
+                html += '<tr> <td>' + data[i].hotel_name + '</td>';
+                html += '<td>' + data[i].check_in_date + '</td>';
+                html += '<td>' + data[i].check_out_date + '</td>';
+                html += '<td>' + data[i].room_number + '</td>';
+                html += '<td><button type="button" class="btn btn-danger" onclick="delete_reservation('+data[i].id+');">Delete</button></td> </tr>';
+                html += '<td><button type="button" class="btn btn-info" onclick="get_reservation('+data[i].id+');">Info</button></td> </tr>';
+            }
+            $("#table_content").html(html);
+        });
+    }
+
+    function delete_reservation(id){
+        $.ajax({
+            url: 'rest/reservation/'+id,
+            method: 'DELETE',
+            success: function(result) {
+                toastr.success('Reservation deleted!');
+                get_reservations();
+            },
+            error: function(){
+                toastr.success('Reservation could not be deleted.');
+            }
+        });
+    }
+
+    function get_reservation(id) {
+        $.get('rest/reservation?id='+id, function(data){
+            alert('Hotel: ' + data.hotel_name + '\nCheck-In: ' + data.check_in_date + '\nCheck-Out: ' + data.check_out_date + '\nRoom: ' + data.room_number);
+        })
+    }
+
+
+
+        var dataSet = [
+            [ "Hollywood", "Ilidža", "4.5*"],
+            [ "Hills", "Ilidža", "5*"],
+            [ "Seos", "Hadžići", "3*"],
+            [ "Europe", "Sarajevo", "5*"]
+        ];
+    
+        $('#example').DataTable( {
+          data: dataSet,
+          columns: [
+              { title: "Hotel   Name" },
+              { title: "City" },
+              { title: "Star    Rating" }
+          ],
+           "pageLength": 5,
+           "lengthMenu": [2, 5, 10, 25, 50, "All"]
+        });
+
+        function open_reservation_modal(){
+            $('#reservationModal').modal('toggle');
+        }
+
+        $('#reservationForm').validate({
+            rules: {
+                hotel: {
+                    required: true
+                },
+                check_in_date: {
+                    required: true
+                },
+                check_out_date: {
+                    required: true
+                },
+                room_number: {
+                    required: true
+                }
+            },
+            submitHandler: function(form, validator) {
+                $.post('rest/reservations', $("#reservationForm").serialize()).done(function(){ 
+                toastr.success('You have made a reservation!');
+                $('#reservationModal').modal('toggle');
+                get_reservations(); 
+                }).fail(function(){
+                toastr.error('Reservation was not made');
+                });
+            }
+        });
+    </script>
+    

@@ -1,0 +1,29 @@
+<h1>Special Covid Deals</h1>
+
+<table id="exampletable" class="displsay" style="width:100%,">
+</table>
+
+<script type="text/javascript">
+
+
+
+var dataSet = [
+            [ "Hollywood", "Ilidža", "4.5*"],
+            [ "Hills", "Ilidža", "5*"],
+            [ "Seos", "Hadžići", "3*"],
+            [ "Europe", "Sarajevo", "5*"]
+        ];
+    
+        $('#exampletable').DataTable( {
+          data: dataSet,
+          columns: [
+              { title: "Hotel   Name" },
+              { title: "City" },
+              { title: "Star    Rating" }
+          ],
+           "pageLength": 5,
+           "lengthMenu": [2, 5, 10, 25, 50, "All"]
+        });
+
+
+</script>
